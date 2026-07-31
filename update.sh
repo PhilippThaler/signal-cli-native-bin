@@ -26,8 +26,8 @@ echo "   sha256: $sum256"
 echo "   sha512: $sum512"
 
 echo "→ Updating checksums..."
-sed -i "s|^sha256sums=('.*')|sha256sums=('$sum256')|" PKGBUILD
-sed -i "s|^sha512sums=('.*')|sha512sums=('$sum512')|" PKGBUILD
+sed -i "/^sha256sums=(/,/)/ s|'[a-f0-9]\{64\}'|'$sum256'|" PKGBUILD
+sed -i "/^sha512sums=(/,/)/ s|'[a-f0-9]\{128\}'|'$sum512'|" PKGBUILD
 
 echo "→ Done. pkgver=$ver pkgrel=1"
 

@@ -8,7 +8,11 @@ pkgbase = signal-cli-native-bin
 	provides = signal-cli
 	conflicts = signal-cli
 	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.5/signal-cli-0.14.5-Linux-native.tar.gz
+	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.5/signal-cli-0.14.5-Linux-native.tar.gz.asc
+	validpgpkeys = FA10826A74907F9EC6BBB7FC2BA2CD21B5B09570
 	sha256sums = 39dc9e483da0d69151065e87aee8486d7a8bc67e0d3e9994c851269c1bfd80e3
+	sha256sums = SKIP
 	sha512sums = fe4447e85e003a44203b406b5fa569c1fcf0eac61fb8165e04624d0906a2278463d56442f130713e48f6b9069dcc01a5970346e39333276b006250b2a581a227
+	sha512sums = SKIP
 
 pkgname = signal-cli-native-bin
