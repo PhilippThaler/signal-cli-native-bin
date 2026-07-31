@@ -1,0 +1,47 @@
+name: Update PKGBUILD
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # daily at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for new upstream release
+        id: check
+        run: |
+          latest=$(curl -sS https://api.github.com/repos/AsamK/signal-cli/releases/latest | jq -r .tag_name)
+          latest_ver="${latest#v}"
+          current_ver=$(grep '^pkgver=' PKGBUILD | cut -d= -f2)
+          echo "latest=$latest_ver" >> $GITHUB_OUTPUT
+          echo "current=$current_ver" >> $GITHUB_OUTPUT
+          if [ "$latest_ver" != "$current_ver" ]; then
+            echo "update=true" >> $GITHUB_OUTPUT
+            echo "New version available: $latest_ver (current: $current_ver)"
+          else
+            echo "update=false" >> $GITHUB_OUTPUT
+            echo "Already up to date ($current_ver)"
+          fi
+
+      - name: Update PKGBUILD
+        if: steps.check.outputs.update == 'true'
+        run: bash update.sh
+
+      - name: Regenerate .SRCINFO
+        if: steps.check.outputs.update == 'true'
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq pacman-package-manager
+          makepkg --printsrcinfo > .SRCINFO
+
+      - name: Commit and push
+        if: steps.check.outputs.update == 'true'
+        run: |
+          git config user.name "forgejo-bot"
+          git config user.email "bot@thaler.fyi"
+          git add PKGBUILD .SRCINFO
+          git commit -m "Bump to ${{ steps.check.outputs.latest }}"
+          git push origin main
