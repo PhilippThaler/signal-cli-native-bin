@@ -36,13 +36,13 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq pacman-package-manager makepkg
           sudo useradd -m builder
-          chmod -R a+rX "$GITHUB_WORKSPACE"
-          mkdir -p /tmp/build && sudo chown builder:builder /tmp/build
-          su builder -c "cd '$GITHUB_WORKSPACE' && HOME=/home/builder BUILDDIR=/tmp/build makepkg --printsrcinfo" > .SRCINFO
+          sudo chown -R builder:builder "$GITHUB_WORKSPACE"
+          su builder -c "cd '$GITHUB_WORKSPACE' && HOME=/home/builder makepkg --printsrcinfo" > .SRCINFO
 
       - name: Commit and push to Forgejo
         if: steps.check.outputs.update == 'true'
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "Philipp Thaler"
           git config user.email "aur@thaler.fyi"
           git add PKGBUILD .SRCINFO
