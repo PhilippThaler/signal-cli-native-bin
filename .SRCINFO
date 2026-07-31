@@ -1,0 +1,13 @@
+pkgbase = signal-cli-native-bin
+	pkgdesc = signal-cli provides a commandline and dbus interface for the Signal messenger (GraalVM native binary)
+	pkgver = 0.14.6
+	pkgrel = 1
+	url = https://github.com/AsamK/signal-cli
+	arch = x86_64
+	license = GPL-3.0-only
+	provides = signal-cli
+	conflicts = signal-cli
+	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.6/signal-cli-0.14.6-Linux-native.tar.gz
+	sha256sums = c78639c2d3c14cd004872a99ecf129bd7d7c26ee7d9844d50c2b0afdafefea68
+
+pkgname = signal-cli-native-bin
