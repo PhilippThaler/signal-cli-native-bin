@@ -21,7 +21,6 @@ sum=$(curl -sSL "$url" | sha256sum | cut -d' ' -f1)
 echo "   sha256: $sum"
 
 echo "→ Updating sha256sums..."
-escaped_url=$(printf '%s\n' "$url" | sed 's/[\/&]/\\&/g')
 sed -i "s|^sha256sums=('.*')|sha256sums=('$sum')|" PKGBUILD
 
 echo "→ Done. pkgver=$ver pkgrel=1"
