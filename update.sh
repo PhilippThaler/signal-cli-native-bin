@@ -15,13 +15,19 @@ echo "→ Updating pkgver..."
 sed -i "s/^pkgver=.*/pkgver=$ver/" PKGBUILD
 sed -i "s/^pkgrel=.*/pkgrel=1/" PKGBUILD
 
-echo "→ Computing new checksum..."
+echo "→ Computing new checksums..."
 url="https://github.com/AsamK/signal-cli/releases/download/$tag/signal-cli-$ver-Linux-native.tar.gz"
-sum=$(curl -sSL "$url" | sha512sum | cut -d' ' -f1)
-echo "   sha256: $sum"
+tmp=$(mktemp)
+curl -sSL "$url" -o "$tmp"
+sum256=$(sha256sum "$tmp" | cut -d' ' -f1)
+sum512=$(sha512sum "$tmp" | cut -d' ' -f1)
+rm -f "$tmp"
+echo "   sha256: $sum256"
+echo "   sha512: $sum512"
 
-echo "→ Updating sha256sums..."
-sed -i "s|^sha512sums=('.*')|sha512sums=('$sum')|" PKGBUILD
+echo "→ Updating checksums..."
+sed -i "s|^sha256sums=('.*')|sha256sums=('$sum256')|" PKGBUILD
+sed -i "s|^sha512sums=('.*')|sha512sums=('$sum512')|" PKGBUILD
 
 echo "→ Done. pkgver=$ver pkgrel=1"
 
