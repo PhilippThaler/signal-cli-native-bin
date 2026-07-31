@@ -1,6 +1,6 @@
 # Maintainer: Philipp Thaler <aur@thaler.fyi>
 pkgname=signal-cli-native-bin
-pkgver=0.14.6
+pkgver=0.14.5
 pkgrel=1
 pkgdesc="signal-cli provides a commandline and dbus interface for the Signal messenger (GraalVM native binary)"
 arch=('x86_64')
@@ -10,7 +10,7 @@ provides=('signal-cli')
 conflicts=('signal-cli')
 
 source=("https://github.com/AsamK/signal-cli/releases/download/v$pkgver/signal-cli-$pkgver-Linux-native.tar.gz")
-sha256sums=('c78639c2d3c14cd004872a99ecf129bd7d7c26ee7d9844d50c2b0afdafefea68')
+sha256sums=('39dc9e483da0d69151065e87aee8486d7a8bc67e0d3e9994c851269c1bfd80e3')
 
 package() {
     install -Dm755 "$srcdir/signal-cli" "$pkgdir/usr/bin/signal-cli"
