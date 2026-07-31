@@ -37,7 +37,7 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq pacman-package-manager
           makepkg --printsrcinfo > .SRCINFO
 
-      - name: Commit and push
+      - name: Commit and push to Forgejo
         if: steps.check.outputs.update == 'true'
         run: |
           git config user.name "forgejo-bot"
@@ -45,3 +45,20 @@ jobs:
           git add PKGBUILD .SRCINFO
           git commit -m "Bump to ${{ steps.check.outputs.latest }}"
           git push origin main
+
+      - name: Push to AUR
+        if: steps.check.outputs.update == 'true'
+        run: |
+          echo "$AUR_SSH_KEY" > /tmp/aur-key
+          chmod 600 /tmp/aur-key
+          mkdir -p /tmp/aur-push
+          cp PKGBUILD .SRCINFO .nvchecker.toml /tmp/aur-push/
+          cd /tmp/aur-push
+          git init
+          git config user.name "forgejo-bot"
+          git config user.email "bot@thaler.fyi"
+          git add PKGBUILD .SRCINFO .nvchecker.toml
+          git commit -m "Bump to ${{ steps.check.outputs.latest }}"
+          GIT_SSH_COMMAND="ssh -i /tmp/aur-key -o StrictHostKeyChecking=accept-new" git push -f ssh://aur@aur.archlinux.org/signal-cli-native-bin.git master
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
