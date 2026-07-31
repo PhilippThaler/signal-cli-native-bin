@@ -34,7 +34,7 @@ jobs:
       - name: Regenerate .SRCINFO
         if: steps.check.outputs.update == 'true'
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq pacman-package-manager
+          sudo apt-get update -qq && sudo apt-get install -y -qq pacman-package-manager makepkg
           makepkg --printsrcinfo > .SRCINFO
 
       - name: Commit and push to Forgejo
