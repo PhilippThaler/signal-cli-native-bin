@@ -17,11 +17,11 @@ sed -i "s/^pkgrel=.*/pkgrel=1/" PKGBUILD
 
 echo "→ Computing new checksum..."
 url="https://github.com/AsamK/signal-cli/releases/download/$tag/signal-cli-$ver-Linux-native.tar.gz"
-sum=$(curl -sSL "$url" | sha256sum | cut -d' ' -f1)
+sum=$(curl -sSL "$url" | sha512sum | cut -d' ' -f1)
 echo "   sha256: $sum"
 
 echo "→ Updating sha256sums..."
-sed -i "s|^sha256sums=('.*')|sha256sums=('$sum')|" PKGBUILD
+sed -i "s|^sha512sums=('.*')|sha512sums=('$sum')|" PKGBUILD
 
 echo "→ Done. pkgver=$ver pkgrel=1"
 
