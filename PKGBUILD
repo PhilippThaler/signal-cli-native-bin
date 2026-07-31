@@ -1,4 +1,4 @@
-# Maintainer: Philipp Thaler <philipp@thaler.dev>
+# Maintainer: Philipp Thaler <aur@thaler.fyi>
 pkgname=signal-cli-native-bin
 pkgver=0.14.6
 pkgrel=1
