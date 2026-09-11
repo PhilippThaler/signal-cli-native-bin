@@ -1,18 +1,18 @@
 pkgbase = signal-cli-native-bin
 	pkgdesc = signal-cli provides a commandline and dbus interface for the Signal messenger (GraalVM native binary)
-	pkgver = 0.14.7
+	pkgver = 0.14.8
 	pkgrel = 1
 	url = https://github.com/AsamK/signal-cli
 	arch = x86_64
 	license = GPL-3.0-only
 	provides = signal-cli
 	conflicts = signal-cli
-	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.7/signal-cli-0.14.7-Linux-native.tar.gz
-	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.7/signal-cli-0.14.7-Linux-native.tar.gz.asc
+	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8-Linux-native.tar.gz
+	source = https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8-Linux-native.tar.gz.asc
 	validpgpkeys = FA10826A74907F9EC6BBB7FC2BA2CD21B5B09570
-	sha256sums = 0fe065294adcf35df4c249b635d0ce57de7765d4fec660bffaa2e7f0549d4e5f
+	sha256sums = 36569af20c709e0c5e6e677b74f50f147b21f3740620b8a7affde70f6027f82a
 	sha256sums = SKIP
-	sha512sums = da95d8bfc655748ef0862bcd7b16174429c1c6ae65cb9469983f5bb7ff2ad272c8a866b8ef23d501e5d18f6491aa938bdcf722b74442b18803f6d4c8b08bc4d0
+	sha512sums = d83e5b089a6a2833b36d22c417bbe813ca2c507e6886ff026d766c2ff008e4a3b7f58a1dddae09ba5f79d0b4f939bca46db3ad1b034c55bc15154f0835bae263
 	sha512sums = SKIP
 
 pkgname = signal-cli-native-bin
