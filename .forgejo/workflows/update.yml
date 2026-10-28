@@ -2,7 +2,7 @@ name: Update PKGBUILD
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # daily at 06:00 UTC
+    - cron: "0 6 * * *" # daily at 06:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -50,18 +50,26 @@ jobs:
           git push origin main
 
       - name: Push to AUR
-        if: steps.check.outputs.update == 'true'
         run: |
-          echo "$AUR_SSH_KEY" > /tmp/aur-key
-          chmod 600 /tmp/aur-key
-          mkdir -p /tmp/aur-push
-          cp PKGBUILD .SRCINFO .nvchecker.toml /tmp/aur-push/
-          cd /tmp/aur-push
-          git init
+          set -euo pipefail
+          key=$(mktemp)
+          printf '%s\n' "$AUR_SSH_KEY" > "$key"
+          chmod 600 "$key"
+          trap 'rm -f "$key"' EXIT
+          export GIT_SSH_COMMAND="ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+
+          push_dir=$(mktemp -d)
+          git clone --quiet ssh://aur@aur.archlinux.org/signal-cli-native-bin.git "$push_dir"
+          cd "$push_dir"
+          cp "$GITHUB_WORKSPACE"/PKGBUILD "$GITHUB_WORKSPACE"/.SRCINFO "$GITHUB_WORKSPACE"/.nvchecker.toml .
           git config user.name "Philipp Thaler"
           git config user.email "aur@thaler.fyi"
           git add PKGBUILD .SRCINFO .nvchecker.toml
-          git commit -m "Bump to ${{ steps.check.outputs.latest }}"
-          GIT_SSH_COMMAND="ssh -i /tmp/aur-key -o StrictHostKeyChecking=accept-new" git push -f ssh://aur@aur.archlinux.org/signal-cli-native-bin.git HEAD:master
+          if git diff --cached --quiet; then
+            echo "AUR already up to date - nothing to push"
+            exit 0
+          fi
+          git commit -m "Bump to $(grep '^pkgver=' PKGBUILD | cut -d= -f2)"
+          git push origin HEAD:master
         env:
           AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
